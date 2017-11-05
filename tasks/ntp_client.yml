@@ -1,4 +1,7 @@
 ---
+- name: Ensure timesyncd is disabled (we'll use ntpd instead)
+  command: "timedatectl set-ntp no"
+  
 - name: Ensure the NTP client is present
   apt: name=ntp state=present
 

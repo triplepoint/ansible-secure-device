@@ -48,6 +48,7 @@ secure_device_ntp_server_definitions:
   - "pool 0.pool.ntp.org iburst"
 
 # List of subnet ip addresses and masks, for supplying NTP service to
-# clients on a subnet
+# clients on a subnet.  Leaving this list empty is equivalent to disabling
+# the ntp service, while keeping the ntp client running on the target machine.
 secure_device_ntp_access_subnets: []
   # - { ip: "192.168.1.1", mask: "255.255.255.0" }
