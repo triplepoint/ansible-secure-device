@@ -1,11 +1,11 @@
 ---
-- include: user_auth.yml
+- import_tasks: user_auth.yml
 
-- include: firewall.yml
+- include_tasks: firewall.yml
   when: secure_device_install_ufw
 
-- include: unattended_upgrades.yml
+- import_tasks: unattended_upgrades.yml
 
-- include: ntp_client.yml
+- import_tasks: ntp_client.yml
 
-- include: logwatch.yml
+- import_tasks: logwatch.yml
