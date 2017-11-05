@@ -1,7 +1,7 @@
 ---
 - import_tasks: user_auth.yml
 
-- include_tasks: firewall.yml
+- import_tasks: firewall.yml
   when: secure_device_install_ufw
 
 - import_tasks: unattended_upgrades.yml
