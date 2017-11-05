@@ -1,0 +1,67 @@
+---
+- name: Ensure fail2ban is installed
+  apt: name=fail2ban state=present
+
+- name: Ensure all the users have their own groups
+  group: name={{ item.username }} state=present
+  with_items: "{{ secure_device_users }}"
+
+- name: Ensure the users are all present
+  user: name={{ item.username }} group={{ item.username }}
+  with_items: "{{ secure_device_users }}"
+
+- name: Ensure the user SSH keys are present, with restrictions
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.public_key }}"
+    key_options: 'no-port-forwarding,no-agent-forwarding,no-X11-forwarding'
+    state: present
+  with_items: "{{ secure_device_users }}"
+
+- name: Ensure each user has a sudo rule set up for them
+  lineinfile:
+    dest: "/etc/sudoers.d/99-user-{{ item.username }}"
+    line: '{{ item.username }} ALL=(ALL) {{ "NOPASSWD:" if item.sudo_passwordless is defined and item.sudo_passwordless else "" }}ALL'
+    regexp: '^{{ item.username }} '
+    validate: 'visudo -cf %s'
+    create: yes
+    owner: root
+    group: root
+    mode: 0440
+  with_items: "{{ secure_device_users }}"
+
+- name: Ensure the users have their passwords set
+  user: name={{ item.username }} password={{ item.crypted_password }}
+  with_items: "{{ secure_device_users }}"
+
+- name: Ensure the root user can never login via SSH
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "PermitRootLogin no"
+    regexp: '^PermitRootLogin '
+  notify:
+    - restart ssh
+
+- name: Ensure global SSH password auth is disabled for everyone
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "PasswordAuthentication no"
+    regexp: '^PasswordAuthentication '
+  notify:
+    - restart ssh
+
+# This bit juggles around some strings so we can build `AllowUsers` in the
+# sshd_config file.
+- set_fact: _allow_users="{{ item.username }}@{{ item.allowed_ssh_host }}"
+  with_items: "{{ secure_device_users }}"
+  register: _allow_users_result
+
+- set_fact: _allow_users_mapped="{{ _allow_users_result.results | map(attribute='ansible_facts._allow_users') | list }}"
+
+- name: Only allow SSH from a specific set of hosts and users
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "AllowUsers {{ _allow_users_mapped | join(' ')}}"
+    regexp: '^AllowUsers .*'
+  notify:
+    - restart ssh

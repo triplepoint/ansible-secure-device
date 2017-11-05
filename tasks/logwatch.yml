@@ -1,0 +1,9 @@
+---
+- name: Ensure logwatch is present
+  apt: name=logwatch state=present
+
+- name: Ensure the logwatch config is present
+  lineinfile:
+    dest: '/etc/cron.daily/00logwatch'
+    line: "/usr/sbin/logwatch --mailto {{ secure_device_log_email }} --detail high"
+    regexp: '^/usr/sbin/logwatch '

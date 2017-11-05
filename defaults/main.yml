@@ -1,0 +1,53 @@
+---
+# List of objects with attributes `username`, `ssh_key`, `crypted_password`,
+# and `allowed_ssh_host`.  An optional `sudo_passwordless` boolean will allow
+# the user to sudo without a password required.
+#
+# Note that the SSH keys provided are appended to any already-existing ones.
+# SSH keys are, in other words, never removed, only added.
+#
+# See https://docs.ansible.com/ansible/latest/faq.html#how-do-i-generate-crypted-passwords-for-the-user-module
+# for more information on crypted passwords.
+#
+# See http://man.openbsd.org/ssh_config.5 for more information on SSHD host
+# match patterns.
+secure_device_users: []
+  # - { username: secure_user,
+  #     public_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}", # Read a local key on the fly (not recommended except for testing)
+  #     allowed_ssh_host: "10.0.2.*",
+  #     crypted_password: "$6$vZuuCPtyszyk1$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1", # "password"
+  #     sudo_passwordless: True     # Optional.  If absent or anthing other than true, user will require a password to `sudo`
+  #   }
+
+# The email address to which logfiles are emailed, for security review.
+secure_device_log_email: "<some secure email address>"
+
+# When True, install `ufw` and configure it with the `secure_device_ssh_allowed_ips`
+# and `secure_device_everyone_ports` values.
+secure_device_install_ufw: True
+
+# Allowed IPs through the firewall to access the ssh port.  Allows CIDR
+# notation, and also "all".
+# By default, we'll use the RFC1918 private local address ranges
+# NOTE: this does nothing if `secure_device_install_ufw` is false
+secure_device_ssh_allowed_ips:
+  - "10.0.0.0/8"
+  - "172.16.0.0/12"
+  - "192.168.0.0/16"
+
+# This list of integers are ports opened for anyone, on any interface
+# NOTE: this does nothing if `secure_device_install_ufw` is false
+secure_device_everyone_ports: []
+  # - 80
+  # - 443
+
+# These are raw lines from ntp.conf defining which upstream servers to use
+# as time references. See the ntp documentation for details:
+# http://support.ntp.org/bin/view/Support/ConfiguringNTP#Section_6.10.
+secure_device_ntp_server_definitions:
+  - "pool 0.pool.ntp.org iburst"
+
+# List of subnet ip addresses and masks, for supplying NTP service to
+# clients on a subnet
+secure_device_ntp_access_subnets: []
+  # - { ip: "192.168.1.1", mask: "255.255.255.0" }

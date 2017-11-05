@@ -1,0 +1,9 @@
+---
+- name: Ensure unattended upgrades is installed
+  apt: name=unattended-upgrades state=present
+
+- name: Ensure the unattended upgrade config is present
+  copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+- name: Ensure the unattended upgrade config is present, part 2
+  copy: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades

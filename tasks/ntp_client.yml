@@ -1,0 +1,7 @@
+---
+- name: Ensure the NTP client is present
+  apt: name=ntp state=present
+
+- name: Ensure the ntp configuration file is installed
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp
