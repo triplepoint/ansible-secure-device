@@ -1,6 +1,6 @@
 ---
 - name: Ensure UFW is installed
-  apt: name=ufw
+  apt: name=ufw state=present
 
 - name: Allow specified IPs through the firewall to the SSH port
   ufw: rule=allow from_ip="{{ item }}" to_port=22
