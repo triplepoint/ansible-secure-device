@@ -11,3 +11,5 @@ At a high level:
 - Install `unattended-upgrades` and configure for automatic apt package security updates
 - Install `ntp` to ensure reliable system time
 - Install `logwatch` and configure to email daily log reports to an admin email address
+
+Obviously this is a role best inspected for details before using, as no possible guarantees can be made about security.

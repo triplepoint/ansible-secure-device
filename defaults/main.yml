@@ -1,5 +1,5 @@
 ---
-# List of objects with attributes `username`, `ssh_key`, `crypted_password`,
+# List of objects with attributes `username`, `public_key`, `crypted_password`,
 # and `allowed_ssh_host`.  An optional `sudo_passwordless` boolean will allow
 # the user to sudo without a password required.
 #
@@ -23,7 +23,8 @@ secure_device_users: []
 secure_device_log_email: "<some secure email address>"
 
 # When True, install `ufw` and configure it with the `secure_device_ssh_allowed_ips`
-# and `secure_device_everyone_ports` values.
+# and `secure_device_everyone_ports` values.  This option allows for alternate
+# firewall implementations to be handled in other roles, if necessary.
 secure_device_install_ufw: True
 
 # Allowed IPs through the firewall to access the ssh port.  Allows CIDR
