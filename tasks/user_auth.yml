@@ -10,6 +10,10 @@
   user: name={{ item.username }} group={{ item.username }}
   with_items: "{{ secure_device_users }}"
 
+- name: Ensure the users have their passwords set
+  user: name={{ item.username }} password={{ item.crypted_password }}
+  with_items: "{{ secure_device_users }}"
+
 - name: Ensure the user SSH keys are present, with restrictions
   authorized_key:
     user: "{{ item.username }}"
@@ -28,10 +32,6 @@
     owner: root
     group: root
     mode: 0440
-  with_items: "{{ secure_device_users }}"
-
-- name: Ensure the users have their passwords set
-  user: name={{ item.username }} password={{ item.crypted_password }}
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure the root user can never login via SSH
