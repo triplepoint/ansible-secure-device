@@ -28,7 +28,7 @@ secure_device_log_email: "<some secure email address>"
 secure_device_install_ufw: True
 
 # Allowed IPs through the firewall to access the ssh port.  Allows CIDR
-# notation, and also "all".
+# notation, and also "any".
 # By default, we'll use the RFC1918 private local address ranges
 # NOTE: this does nothing if `secure_device_install_ufw` is false
 secure_device_ssh_allowed_ips:
