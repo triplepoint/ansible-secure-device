@@ -1,6 +1,6 @@
 ---
 - name: Ensure logwatch is present
-  apt: name=logwatch state=present
+  package: name=logwatch state=present
 
 - name: Ensure the logwatch config is present
   lineinfile:
