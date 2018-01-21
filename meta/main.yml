@@ -10,5 +10,5 @@ galaxy_info:
         - xenial
   galaxy_tags:
     - security
-    - user management
+    - user_management
 dependencies: []
