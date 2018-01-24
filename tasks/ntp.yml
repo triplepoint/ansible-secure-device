@@ -1,0 +1,16 @@
+---
+- name: Determine whether timedatectl is currently enabled
+  command: timedatectl status | grep -oP ' Network time on: \K\w+'
+  changed: never
+  register: _timedatectl_enabled
+
+- name: Ensure timesyncd is disabled (we'll use ntpd instead)
+  command: "timedatectl set-ntp no"
+  when: _timedatectl_enabled.stdout == "yes"
+
+- name: Ensure the NTP package is present
+  package: name=ntp state=present
+
+- name: Ensure the ntp configuration file is installed
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp
