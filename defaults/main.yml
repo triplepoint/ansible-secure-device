@@ -20,7 +20,9 @@ secure_device_users: []
   #   }
 
 # The email address to which logfiles are emailed, for security review.
-secure_device_log_email: "<some secure email address>"
+# Should be a string email address, or False to disable emails.
+# Note that setting this false will remove logwatch if its already installed.
+secure_device_log_email: False
 
 # When True, install `ufw` and configure it with the `secure_device_ssh_allowed_ips`
 # and `secure_device_everyone_ports` values.  This option allows for alternate
