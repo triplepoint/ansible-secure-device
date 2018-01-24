@@ -1,4 +1,6 @@
 ---
+- import_tasks: fail2ban.yml
+
 - import_tasks: user_auth.yml
 
 - import_tasks: firewall.yml
