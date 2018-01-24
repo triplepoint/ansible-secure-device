@@ -1,7 +1,7 @@
 ---
 - name: Determine whether timedatectl is currently enabled
-  command: timedatectl status | grep -oP ' Network time on: \K\w+'
-  changed: never
+  shell: 'timedatectl status | grep -oP " Network time on: \K\w+"'
+  changed_when: False
   register: _timedatectl_enabled
 
 - name: Ensure timesyncd is disabled (we'll use ntpd instead)

@@ -1,12 +1,12 @@
 ---
 - name: Ensure logwatch is absent
   package: name=logwatch state=absent
-  when: not secure_device_log_email
+  when: secure_device_log_email == False
 
 - name: Ensure logwatch is present
   package: name=logwatch state=present
-  when: secure_device_log_email
+  when: secure_device_log_email != False
 
 - name: Ensure the logwatch config override file is present
   template: src=logwatch_override.conf.j2 dest=/etc/logwatch/conf/override.conf
-  when: secure_device_log_email
+  when: secure_device_log_email != False

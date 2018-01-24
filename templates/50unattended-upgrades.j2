@@ -9,5 +9,5 @@ Unattended-Upgrade::Allowed-Origins {
 {% if secure_device_log_email %}
 
 Unattended-Upgrade::Mail "{{ secure_device_log_email }}";
-Unattended-Upgrade::MailOnlyOnError "True"
+Unattended-Upgrade::MailOnlyOnError "True";
 {% endif %}
