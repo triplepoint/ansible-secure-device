@@ -1,4 +1,6 @@
 ---
+- import_tasks: cleanup.yml
+
 - import_tasks: fail2ban.yml
 
 - import_tasks: user_auth.yml

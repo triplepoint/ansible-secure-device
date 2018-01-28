@@ -7,6 +7,11 @@
   package: name=logwatch state=present
   when: secure_device_log_email != False
 
-- name: Ensure the logwatch config override file is present
-  template: src=logwatch_override.conf.j2 dest=/etc/logwatch/conf/override.conf
-  when: secure_device_log_email != False
+- name: Ensure the logwatch configuration is set
+  lineinfile:
+    path: /usr/share/logwatch/default.conf/logwatch.conf
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "^{{ item.key }} ="
+  with_items:
+      - Detail: High
+      - MailTo: "{{ secure_device_log_email }}"

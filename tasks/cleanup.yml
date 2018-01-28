@@ -1,0 +1,7 @@
+---
+# This file contains "undo" procedures to cleanup old behaviors that this
+# role used to have (for instance, config files that were once generated but
+# no longer required)
+
+- name: Rollback: Ensure the logwatch config override file is not present
+  file: path=/etc/logwatch/conf/override.conf state=absent
