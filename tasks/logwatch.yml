@@ -12,6 +12,7 @@
     path: /usr/share/logwatch/default.conf/logwatch.conf
     line: "{{ item.key }} = {{ item.value }}"
     regexp: "^{{ item.key }} ="
-  with_items:
-    - Detail: High
-    - MailTo: "{{ secure_device_log_email }}"
+  with_dict:
+    Detail: High
+    MailTo: "{{ secure_device_log_email }}"
+  when: secure_device_log_email != False

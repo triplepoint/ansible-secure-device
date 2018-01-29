@@ -3,10 +3,11 @@
   shell: 'timedatectl status | grep -oP " Network time on: \K\w+"'
   changed_when: False
   register: _timedatectl_enabled
+  ignore_errors: yes
 
 - name: Ensure timesyncd is disabled (we'll use ntpd instead)
   command: "timedatectl set-ntp no"
-  when: _timedatectl_enabled.stdout == "yes"
+  when: _timedatectl_enabled.rc == 0 and _timedatectl_enabled.stdout == "yes"
 
 - name: Ensure the NTP package is present
   package: name=ntp state=present
