@@ -16,7 +16,7 @@ secure_device_users: []
   #     public_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}", # Read a local key on the fly (not recommended except for testing)
   #     allowed_ssh_host: "10.0.2.*",
   #     crypted_password: "$6$vZuuCPtyszyk1$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1", # "password"
-  #     sudo_passwordless: True     # Optional.  If absent or anthing other than true, user will require a password to `sudo`
+  #     sudo_passwordless: True     # Optional.  If absent or anything other than true, user will require a password to `sudo`
   #   }
 
 # The email address to which logfiles are emailed, for security review.
