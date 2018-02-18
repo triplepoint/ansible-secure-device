@@ -24,7 +24,11 @@ provisioner:
           }
         secure_device_log_email: test@test.test
         secure_device_everyone_ports:
-          - 80
+          - 80           # integer port
+          - port: "100:103"    # port range
+            proto: tcp
+          - port: 300    # port limited to a specific protocol
+            proto: udp
 
   lint:
     name: ansible-lint

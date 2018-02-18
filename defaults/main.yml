@@ -38,11 +38,18 @@ secure_device_ssh_allowed_ips:
   - "172.16.0.0/12"
   - "192.168.0.0/16"
 
-# This list of integers are ports opened for anyone, on any interface
+# Define a limited set of firewall rules
 # NOTE: this does nothing if `secure_device_install_ufw` is false
+# Items in this list can be an integer port to open for all protocols, like:
+#   - 80
+#   - 443
+# Or you can limit the rule to a specific protocol, like:
+#   - port: 80
+#     proto: tcp
+# And if you specify protocol tcp or udp, you can specify port ranges, like:
+#   - port: "10000:11000"
+#     proto: tcp
 secure_device_everyone_ports: []
-# - 80
-# - 443
 
 # These are raw lines from ntp.conf defining which upstream servers to use
 # as time references. See the ntp documentation for details:
