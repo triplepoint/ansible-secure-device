@@ -17,9 +17,9 @@ provisioner:
       all:
         secure_device_users:
           - { username: secure_user,
-              public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key", # Lifted from the Vagrant public key
+              public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",   # Lifted from the Vagrant public key
               allowed_ssh_host: "10.0.2.*",
-              crypted_password: "$$6$$vZuuCPtyszyk1$$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1", # "password".  Note molecule requires escaped dollar signs with doubles ($$), where ansible does not require this.
+              crypted_password: "$$6$$vZuuCPtyszyk1$$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1",   # "password".  Note molecule requires escaped dollar signs with doubles ($$), where ansible does not require this.
               sudo_passwordless: True     # Optional.  If absent or anything other than true, user will require a password to `sudo`
           }
         secure_device_log_email: test@test.test

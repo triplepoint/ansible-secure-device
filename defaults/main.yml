@@ -12,12 +12,12 @@
 # See http://man.openbsd.org/ssh_config.5 for more information on SSHD host
 # match patterns.
 secure_device_users: []
-  # - { username: secure_user,
-  #     public_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}", # Read a local key on the fly (not recommended except for testing)
-  #     allowed_ssh_host: "10.0.2.*",
-  #     crypted_password: "$6$vZuuCPtyszyk1$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1", # "password"
-  #     sudo_passwordless: True     # Optional.  If absent or anything other than true, user will require a password to `sudo`
-  #   }
+# - { username: secure_user,
+#     public_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}", # Read a local key on the fly (not recommended except for testing)
+#     allowed_ssh_host: "10.0.2.*",
+#     crypted_password: "$6$vZuuCPtyszyk1$501xY6ldPQWa5zQDsa0VJuWQCZsQQUAn8lX/mIlZq3nvEUoRLl97HQeIsy.1aIxj.2LtG7QgK4mvrsC5bbrYe1", # "password"
+#     sudo_passwordless: True     # Optional.  If absent or anything other than true, user will require a password to `sudo`
+#   }
 
 # The email address to which logfiles are emailed, for security review.
 # Should be a string email address, or False to disable emails.
@@ -41,8 +41,8 @@ secure_device_ssh_allowed_ips:
 # This list of integers are ports opened for anyone, on any interface
 # NOTE: this does nothing if `secure_device_install_ufw` is false
 secure_device_everyone_ports: []
-  # - 80
-  # - 443
+# - 80
+# - 443
 
 # These are raw lines from ntp.conf defining which upstream servers to use
 # as time references. See the ntp documentation for details:
@@ -54,4 +54,4 @@ secure_device_ntp_server_definitions:
 # clients on a subnet.  Leaving this list empty is equivalent to disabling
 # the ntp service, while keeping the ntp client running on the target machine.
 secure_device_ntp_access_subnets: []
-  # - { ip: "192.168.1.1", mask: "255.255.255.0" }
+# - { ip: "192.168.1.1", mask: "255.255.255.0" }
