@@ -36,16 +36,14 @@
     dest: '/etc/ssh/sshd_config'
     line: "PermitRootLogin no"
     regexp: '^PermitRootLogin '
-  notify:
-    - restart ssh
+  notify: restart ssh
 
 - name: Ensure global SSH password auth is disabled for everyone
   lineinfile:
     dest: '/etc/ssh/sshd_config'
     line: "PasswordAuthentication no"
     regexp: '^PasswordAuthentication '
-  notify:
-    - restart ssh
+  notify: restart ssh
 
 # This bit juggles around some strings so we can build `AllowUsers` in the
 # sshd_config file.
@@ -62,5 +60,4 @@
     dest: '/etc/ssh/sshd_config'
     line: "AllowUsers {{ _allow_users_mapped | join(' ')}}"
     regexp: '^AllowUsers .*'
-  notify:
-    - restart ssh
+  notify: restart ssh
