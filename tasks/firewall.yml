@@ -3,7 +3,11 @@
   package: name=ufw state=present
 
 - name: Allow specified IPs through the firewall to the SSH port
-  ufw: rule=allow from_ip="{{ item }}" to_port=22
+  ufw:
+    rule: allow
+    from_ip: "{{ item }}"
+    port: 22
+    proto: tcp
   with_items: "{{ secure_device_ssh_allowed_ips }}"
 
 - name: Ensure some ports are open to everyone
