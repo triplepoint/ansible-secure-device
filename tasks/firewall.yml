@@ -2,20 +2,42 @@
 - name: Ensure UFW is installed
   package: name=ufw state=present
 
-- name: Allow specified IPs through the firewall to the SSH port
-  ufw:
-    rule: allow
-    from_ip: "{{ item }}"
-    port: 22
-    proto: tcp
+- name: Build a list of SSH port policies
+  set_fact:
+    _ufw_ssh_policy:
+      rule: allow
+      from_ip: "{{ item }}"
+      port: 22
+      proto: tcp
+  changed_when: False
   with_items: "{{ secure_device_ssh_allowed_ips }}"
+  register: _ufw_ssh_policies
 
-- name: Ensure some ports are open to everyone
+- name: Add the ssh port policies to the defined additional policies
+  set_fact:
+    _ufw_policies: "{{ _ufw_ssh_policies.results | map(attribute='ansible_facts._ufw_ssh_policy') | list }} + {{ secure_device_everyone_ports }}"
+  changed_when: False
+
+# Determine whether or not the entire UFW policy list has changed from the
+# last deploy.
+- import_tasks: _var_change_detection.yml
+  vars:
+    _change_detection_var_name: "_ufw_policies"
+    _change_detection_var: "{{ _ufw_policies }}"
+
+- name: Ensure the firewall is reset
+  ufw: state=reset
+  when: _change_detection_was_detected
+
+- name: Ensure the UFW policies are applied
   ufw:
     rule: allow
+    from_ip: "{{ item.from_ip | default(omit) }}"
     port: "{{ item.port | default(item) }}"
     proto: "{{ item.proto | default(omit) }}"
-  with_items: "{{ secure_device_everyone_ports }}"
+  with_items: "{{ _ufw_policies }}"
+  when: _change_detection_was_detected
 
 - name: Ensure the firewall is enabled, and the default policy is deny
   ufw: state=enabled policy=deny
+  when: _change_detection_was_detected
