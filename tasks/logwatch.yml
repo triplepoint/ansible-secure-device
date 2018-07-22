@@ -1,11 +1,11 @@
 ---
 - name: Ensure logwatch is absent
   package: name=logwatch state=absent
-  when: secure_device_log_email == False
+  when: secure_device_log_email == false
 
 - name: Ensure logwatch is present
   package: name=logwatch state=present
-  when: secure_device_log_email != False
+  when: secure_device_log_email != false
 
 - name: Ensure the logwatch configuration is set
   lineinfile:
@@ -15,4 +15,4 @@
   with_dict:
     Detail: High
     MailTo: "{{ secure_device_log_email }}"
-  when: secure_device_log_email != False
+  when: secure_device_log_email != false
