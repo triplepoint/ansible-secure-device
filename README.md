@@ -1,4 +1,4 @@
-# Intro
+# Intro [![Build Status](https://travis-ci.org/triplepoint/ansible-secure-device.svg?branch=master)](https://travis-ci.org/triplepoint/ansible-secure-device)
 The goal of this role is to bring a machine up as generically as possible, secure enough to face the public Internet and not immediately melt.
 
 At a high level:
