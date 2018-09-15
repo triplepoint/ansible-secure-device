@@ -16,6 +16,7 @@ env:
 
 before_install:
   - pip install --upgrade pipenv
+  - modprobe ip6table_filter
 
 install:
   - yes | pipenv install --dev --deploy
