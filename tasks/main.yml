@@ -1,4 +1,7 @@
 ---
+- name: Ensure sshd is installed
+  package: name=openssh-server state=present
+
 - import_tasks: cleanup.yml
 
 - import_tasks: fail2ban.yml
