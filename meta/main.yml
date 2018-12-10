@@ -1,6 +1,5 @@
 ---
 galaxy_info:
-  role_name: secure-device
   author: Jonathan Hanson
   description: A role responsible for some basic security tweaks for internet-facing machines
   license: MIT
