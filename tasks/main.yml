@@ -1,6 +1,5 @@
 ---
-- name: Ensure sshd is installed
-  package: name=openssh-server state=present
+- import_tasks: sshd.yml
 
 - import_tasks: cleanup.yml
 
