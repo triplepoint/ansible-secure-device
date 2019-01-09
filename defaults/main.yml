@@ -29,6 +29,12 @@ secure_device_log_email: false
 # firewall implementations to be handled in other roles, if necessary.
 secure_device_install_ufw: true
 
+# The port declared for SSH usage.  Note that this is only used in this role
+# to open a port in the firewall with UFW, and only then if
+# `secure_device_install_ufw` is true.
+# NOTE: this does nothing if `secure_device_install_ufw` is false
+secure_device_firewall_ssh_port: 22
+
 # Allowed IPs through the firewall to access the ssh port.  Allows CIDR
 # notation, and also "any".
 # By default, we'll use the RFC1918 private local address ranges

@@ -7,7 +7,7 @@
     _ufw_ssh_policy:
       rule: allow
       from_ip: "{{ item }}"
-      port: 22
+      port: "{{ secure_device_firewall_ssh_port }}"
       proto: tcp
   changed_when: false
   with_items: "{{ secure_device_ssh_allowed_ips }}"
