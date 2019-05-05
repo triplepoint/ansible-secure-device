@@ -58,6 +58,6 @@
 - name: Only allow SSH from a specific set of hosts and users
   lineinfile:
     dest: '/etc/ssh/sshd_config'
-    line: "AllowUsers {{ _allow_users_mapped | join(' ')}}"
+    line: "AllowUsers {{ _allow_users_mapped | join(' ') }}"
     regexp: '^AllowUsers .*'
   notify: restart ssh
