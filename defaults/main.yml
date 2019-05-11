@@ -29,6 +29,9 @@ secure_device_log_email: false
 # firewall implementations to be handled in other roles, if necessary.
 secure_device_install_ufw: true
 
+# When true, install and configure fail2ban.
+secure_device_install_fail2ban: true
+
 # The port declared for SSH usage.  Note that this is only used in this role
 # to open a port in the firewall with UFW, and only then if
 # `secure_device_install_ufw` is true.
