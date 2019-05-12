@@ -1,18 +1,19 @@
 ---
 - name: Ensure logwatch is absent
   package: name=logwatch state=absent
-  when: secure_device_log_email == false
+  when: not (secure_device_log_email | bool)
 
-- name: Ensure logwatch is present
-  package: name=logwatch state=present
-  when: secure_device_log_email != false
+- name: Uninstall logwatch
+  when: secure_device_log_email | bool
+  block:
+    - name: Ensure logwatch is present
+      package: name=logwatch state=present
 
-- name: Ensure the logwatch configuration is set
-  lineinfile:
-    path: /usr/share/logwatch/default.conf/logwatch.conf
-    line: "{{ item.key }} = {{ item.value }}"
-    regexp: "^{{ item.key }} ="
-  with_dict:
-    Detail: High
-    MailTo: "{{ secure_device_log_email }}"
-  when: secure_device_log_email != false
+    - name: Ensure the logwatch configuration is set
+      lineinfile:
+        path: /usr/share/logwatch/default.conf/logwatch.conf
+        line: "{{ item.key }} = {{ item.value }}"
+        regexp: "^{{ item.key }} ="
+      with_dict:
+        Detail: High
+        MailTo: "{{ secure_device_log_email }}"
