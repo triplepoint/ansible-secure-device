@@ -35,6 +35,9 @@ secure_device_install_fail2ban: true
 # When true, replace timedatectl with an NTPD server and client
 secure_device_install_ntp: true
 
+# When true, set up unattended upgrade management
+secure_device_install_unattended_upgrades: true
+
 # The port declared for SSH usage.  Note that this is only used in this role
 # to open a port in the firewall with UFW, and only then if
 # `secure_device_install_ufw` is true.

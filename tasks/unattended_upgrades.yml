@@ -1,9 +1,24 @@
 ---
-- name: Ensure unattended upgrades is installed
-  package: name=unattended-upgrades state=present
+- name: Install unattended upgrade management
+  when: secure_device_install_unattended_upgrades
+  block:
+    - name: Ensure unattended upgrades is installed
+      package: name=unattended-upgrades state=present
 
-- name: Ensure the unattended upgrade config is present
-  copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+    - name: Ensure the unattended upgrade config is present
+      copy: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
 
-- name: Ensure the unattended upgrade config is present, part 2
-  template: src=50unattended-upgrades.j2 dest=/etc/apt/apt.conf.d/50unattended-upgrades
+    - name: Ensure the unattended upgrade config is present, part 2
+      template: src=50unattended-upgrades.j2 dest=/etc/apt/apt.conf.d/50unattended-upgrades
+
+- name: Install unattended upgrade management
+  when: not secure_device_install_unattended_upgrades
+  block:
+    - name: Ensure unattended upgrades is not installed
+      package: name=unattended-upgrades state=absent
+
+    - name: Ensure unattended upgrade config is removed
+      file: state=absent path=/etc/apt/apt.conf.d/20auto-upgrades
+
+    - name: Ensure unattended upgrade config is removed, part 2
+      file: state=absent path=/etc/apt/apt.conf.d/50unattended-upgrades
