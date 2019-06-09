@@ -53,6 +53,7 @@ leapsectz right/UTC
 # Chrony.
 dumpdir /var/run/chrony
 
+{% if secure_device_ntp_allow_hosts %}
 # Max memory in bytes to allocate for logging client access
 clientloglimit 1048576
 
@@ -60,3 +61,4 @@ clientloglimit 1048576
 {% for host in secure_device_ntp_allow_hosts %}
 allow {{ host }}
 {% endfor %}
+{% endif %}
