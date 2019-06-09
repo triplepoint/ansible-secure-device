@@ -1,5 +1,5 @@
 ---
-- name: Install NTP
+- name: Install an NTP service
   when: secure_device_install_ntp
   block:
     - name: Determine whether timedatectl is currently enabled
@@ -12,15 +12,21 @@
       command: "timedatectl set-ntp no"
       when: _timedatectl_enabled.rc == 0 and _timedatectl_enabled.stdout == "yes"
 
-    - name: Ensure the NTP package is present
-      package: name=ntp state=present
+    - name: Ensure the previously-installed NTPD package is absent
+      package: name=ntp state=absent
 
-    - name: Ensure the ntp configuration file is installed
-      template: src=ntp.conf.j2 dest=/etc/ntp.conf
-      notify: restart ntp
+    - name: Ensure the chrony package is present
+      package: name=chrony state=present
 
-- name: Uninstall NTP
+    - name: Ensure the chrony configuration file is installed
+      template: src=chrony.conf.j2 dest=/etc/chrony/chrony.conf
+      notify: restart chrony
+
+- name: Uninstall the installed NTP services
   when: not secure_device_install_ntp
   block:
-    - name: Ensure the NTP package is absent
+    - name: Ensure the NTPD package is absent
       package: name=ntp state=absent
+
+    - name: Ensure the Chrony package is absent
+      package: name=chrony state=absent

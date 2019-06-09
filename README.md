@@ -9,7 +9,7 @@ At a high level:
 - Limit SSH access to a specific IP address range
 - Install `ufw` and disable all traffic, with configurable port exceptions (optional)
 - Install `unattended-upgrades` and configure for automatic apt package security updates
-- Install `ntp` to ensure reliable system time
+- Install an `ntp` server to ensure reliable system time
 - Install `logwatch` and configure to email daily log reports to an admin email address
 
 Obviously this is a role best inspected for details before using, as no possible guarantees can be made about security.

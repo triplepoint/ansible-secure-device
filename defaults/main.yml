@@ -66,14 +66,13 @@ secure_device_ssh_allowed_ips:
 #     proto: tcp
 secure_device_everyone_ports: []
 
-# These are raw lines from ntp.conf defining which upstream servers to use
-# as time references. See the ntp documentation for details:
-# http://support.ntp.org/bin/view/Support/ConfiguringNTP#Section_6.10.
-secure_device_ntp_server_definitions:
-  - "pool 0.pool.ntp.org iburst"
-
-# List of subnet ip addresses and masks, for supplying NTP service to
-# clients on a subnet.  Leaving this list empty is equivalent to disabling
-# the ntp service, while keeping the ntp client running on the target machine.
-secure_device_ntp_access_subnets: []
-# - { ip: "192.168.1.1", mask: "255.255.255.0" }
+# List of host ip addresses, for supplying NTP service to clients.
+# Leaving this list empty is equivalent to disabling the ntp service,
+# while keeping the ntp client running on the target machine.
+# Note that an empty "" element is equivalent to saying allow any client.
+# See:
+# https://chrony.tuxfamily.org/doc/3.5/chrony.conf.html
+secure_device_ntp_allow_hosts: []
+# - 1.2.3.4
+# - 2.3.4.0/22
+# - ""
