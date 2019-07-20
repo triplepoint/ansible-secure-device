@@ -73,6 +73,6 @@ secure_device_everyone_ports: []
 # See:
 # https://chrony.tuxfamily.org/doc/3.5/chrony.conf.html
 secure_device_ntp_allow_hosts: []
-# - 1.2.3.4
-# - 2.3.4.0/22
+# - "1.2.3.4"
+# - "2.3.4.0/22"
 # - ""
