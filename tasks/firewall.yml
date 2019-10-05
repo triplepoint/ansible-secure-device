@@ -1,4 +1,10 @@
 ---
+- name: Uninstall UFW
+  when: not secure_device_install_ufw
+  block:
+    - name: Ensure UFW is not installed
+      package: name=ufw state=absent
+
 - name: Install UFW
   when: secure_device_install_ufw
   block:
@@ -42,11 +48,5 @@
       when: _change_detection_was_detected
 
     - name: Ensure the firewall is enabled, and the default policy is deny
-      ufw: state=enabled policy=deny
+      ufw: state=enabled default=deny
       when: _change_detection_was_detected
-
-- name: Uninstall UFW
-  when: not secure_device_install_ufw
-  block:
-    - name: Ensure UFW is not installed
-      package: name=ufw state=absent
