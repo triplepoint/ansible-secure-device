@@ -1,3 +1,5 @@
 ---
 - name: Ensure sshd is installed
-  package: name=openssh-server state=present
+  package:
+    name: openssh-server
+    state: present

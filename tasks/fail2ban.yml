@@ -1,8 +1,12 @@
 ---
 - name: Ensure fail2ban is installed
-  package: name=fail2ban state=present
+  package:
+    name: fail2ban
+    state: present
   when: secure_device_install_fail2ban
 
 - name: Ensure fail2ban is not installed
-  package: name=fail2ban state=absent
+  package:
+    name: fail2ban
+    state: absent
   when: not secure_device_install_fail2ban

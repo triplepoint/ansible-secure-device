@@ -1,13 +1,17 @@
 ---
 - name: Ensure logwatch is absent
-  package: name=logwatch state=absent
+  package:
+    name: logwatch
+    state: absent
   when: secure_device_log_email == false
 
 - name: Uninstall logwatch
   when: secure_device_log_email != false
   block:
     - name: Ensure logwatch is present
-      package: name=logwatch state=present
+      package:
+        name: logwatch
+        state: present
 
     - name: Ensure the logwatch configuration is set
       lineinfile:

@@ -1,14 +1,20 @@
 ---
 - name: Ensure all the users have their own groups
-  group: name={{ item.username }} state=present
+  group:
+    name: "{{ item.username }}"
+    state: present
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure the users are all present
-  user: name={{ item.username }} group={{ item.username }}
+  user:
+    name: "{{ item.username }}"
+    group: "{{ item.username }}"
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure the users have their passwords set
-  user: name={{ item.username }} password={{ item.crypted_password }}
+  user:
+    name: "{{ item.username }}"
+    password: "{{ item.crypted_password }}"
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure the user SSH keys are present, with restrictions
@@ -48,12 +54,14 @@
 # This bit juggles around some strings so we can build `AllowUsers` in the
 # sshd_config file.
 - name: Define the allow_users list variable of "username@host" allowed ssh users
-  set_fact: _allow_users="{{ item.username }}@{{ item.allowed_ssh_host }}"
+  set_fact:
+    _allow_users: "{{ item.username }}@{{ item.allowed_ssh_host }}"
   with_items: "{{ secure_device_users }}"
   register: _allow_users_result
 
 - name: Pull the processed list out of the _allow_users_result object
-  set_fact: _allow_users_mapped="{{ _allow_users_result.results | map(attribute='ansible_facts._allow_users') | list }}"
+  set_fact:
+    _allow_users_mapped: "{{ _allow_users_result.results | map(attribute='ansible_facts._allow_users') | list }}"
 
 - name: Only allow SSH from a specific set of hosts and users
   lineinfile:

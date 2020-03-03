@@ -3,13 +3,17 @@
   when: not secure_device_install_ufw
   block:
     - name: Ensure UFW is not installed
-      package: name=ufw state=absent
+      package:
+        name: ufw
+        state: absent
 
 - name: Install UFW
   when: secure_device_install_ufw
   block:
     - name: Ensure UFW is installed
-      package: name=ufw state=present
+      package:
+        name: ufw
+        state: present
 
     - name: Build a list of SSH port policies
       set_fact:
@@ -35,7 +39,8 @@
         _change_detection_var: "{{ _ufw_policies }}"
 
     - name: Ensure the firewall is reset
-      ufw: state=reset
+      ufw:
+        state: reset
       when: _change_detection_was_detected
 
     - name: Ensure the UFW policies are applied
@@ -48,5 +53,7 @@
       when: _change_detection_was_detected
 
     - name: Ensure the firewall is enabled, and the default policy is deny
-      ufw: state=enabled default=deny
+      ufw:
+        state: enabled
+        default: deny
       when: _change_detection_was_detected
