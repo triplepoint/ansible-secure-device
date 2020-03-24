@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-secure-device"
+      include_role:
+        name: "ansible-secure-device"
