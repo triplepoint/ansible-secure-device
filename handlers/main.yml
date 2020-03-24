@@ -1,6 +1,10 @@
 ---
 - name: restart ssh
-  service: name=ssh state=restarted
+  service:
+    name: ssh
+    state: restarted
 
 - name: restart chrony
-  service: name=chrony state=restarted
+  service:
+    name: chrony
+    state: restarted
