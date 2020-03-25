@@ -3,10 +3,10 @@
   package:
     name: logwatch
     state: absent
-  when: secure_device_log_email == false
+  when: not secure_device_log_email
 
 - name: Uninstall logwatch
-  when: secure_device_log_email != false
+  when: secure_device_log_email | bool
   block:
     - name: Ensure logwatch is present
       package:
