@@ -6,7 +6,7 @@
   when: not secure_device_log_email
 
 - name: Uninstall logwatch
-  when: secure_device_log_email | bool
+  when: secure_device_log_email | default(false)
   block:
     - name: Ensure logwatch is present
       package:
