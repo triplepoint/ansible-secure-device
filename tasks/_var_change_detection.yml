@@ -28,7 +28,7 @@
   file:
     state: directory
     path: "{{ _change_detection_dir }}"
-    mode: "0700"
+    mode: 0700
 
 - name: "VAR CHANGE DETECTION: Generate a hash file of the given variable"
   shell: "echo -n \"{{ _change_detection_var | to_json | hash('md5') }}  -\n\" > {{ _change_detection_file_name }}.new"
