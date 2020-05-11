@@ -9,6 +9,6 @@
 
 - import_tasks: unattended_upgrades.yml
 
-- import_tasks: ntp.yml
+- import_tasks: time_protocol.yml
 
 - import_tasks: logwatch.yml
