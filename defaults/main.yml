@@ -33,8 +33,8 @@ secure_device_install_ufw: true
 secure_device_install_fail2ban: true
 
 # when fail2ban is enabled, these values will be written to a jail.local configuration
-# file.  Dict keys are config file headers, and the values are dicts of variable/value
-# pairs.
+# file.  Dict keys are config file jail names, and the values are dicts of variable/value
+# pairs for that jail.
 # The fail2ban documentation is a bit sketchy, but you can try these resources for more info:
 # - https://www.fail2ban.org
 # - https://github.com/fail2ban/fail2ban/wiki
