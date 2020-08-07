@@ -1,0 +1,7 @@
+{% for section, values in secure_device_fail2ban_config.items() %}
+[{{section}}]
+{% for name, value in values.items() %}
+{{name}} = {{value}}
+{% endfor %}
+
+{% endfor %}

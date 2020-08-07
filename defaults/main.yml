@@ -32,6 +32,21 @@ secure_device_install_ufw: true
 # When true, install and configure fail2ban.
 secure_device_install_fail2ban: true
 
+# when fail2ban is enabled, these values will be written to a jail.local configuration
+# file.  Dict keys are config file headers, and the values are dicts of variable/value
+# pairs.
+# The fail2ban documentation is a bit sketchy, but you can try these resources for more info:
+# - https://www.fail2ban.org
+# - https://github.com/fail2ban/fail2ban/wiki
+# - https://github.com/fail2ban/fail2ban/blob/master/config/jail.conf
+secure_device_fail2ban_config: {}
+#   DEFAULT:
+#     bantime: "10m"
+#     findtime: "10m"
+#     maxretry: "5"
+#   sshd:
+#     enabled: "true"
+
 # When true, replace timedatectl with an NTPD server and client
 secure_device_install_ntp: true
 
