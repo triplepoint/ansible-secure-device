@@ -1,4 +1,10 @@
 ---
+# Global SSH
+- name: Ensure sshd is installed
+  package:
+    name: openssh-server
+    state: present
+
 - name: Ensure all the users have their own groups
   group:
     name: "{{ item.username }}"
