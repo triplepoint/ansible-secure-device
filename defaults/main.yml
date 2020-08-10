@@ -41,8 +41,8 @@ secure_device_install_fail2ban: true
 # - https://github.com/fail2ban/fail2ban/blob/master/config/jail.conf
 secure_device_fail2ban_config: {}
 #   DEFAULT:
-#     bantime: "10m"
-#     findtime: "10m"
+#     bantime: "600"
+#     findtime: "600"
 #     maxretry: "5"
 #   sshd:
 #     enabled: "true"
