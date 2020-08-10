@@ -24,11 +24,6 @@ secure_device_users: []
 # Note that setting this "" will remove logwatch if its already installed.
 secure_device_log_email: ""
 
-# When true, install `ufw` and configure it with the `secure_device_ssh_allowed_ips`
-# and `secure_device_everyone_ports` values.  This option allows for alternate
-# firewall implementations to be handled in other roles, if necessary.
-secure_device_install_ufw: true
-
 # When true, install and configure fail2ban.
 secure_device_install_fail2ban: true
 
@@ -53,11 +48,14 @@ secure_device_install_ntp: true
 # When true, set up unattended upgrade management
 secure_device_install_unattended_upgrades: true
 
-# The port declared for SSH usage.  Note that this is only used in this role
-# to open a port in the firewall with UFW, and only then if
-# `secure_device_install_ufw` is true.
-# NOTE: this does nothing if `secure_device_install_ufw` is false
-secure_device_firewall_ssh_port: 22
+# When true, install `ufw` and configure it with the `secure_device_ssh_allowed_ips`
+# and `secure_device_everyone_ports` values.  This option allows for alternate
+# firewall implementations to be handled in other roles, if necessary.
+secure_device_install_ufw: false
+
+# What port should the SSHD service listen on?
+# Also used by UFW to define an open port for the SSHD server, when necessary.
+secure_device_sshd_port: 22
 
 # Allowed IPs through the firewall to access the ssh port.  Allows CIDR
 # notation, and also "any".

@@ -20,7 +20,7 @@
         _ufw_ssh_policy:
           rule: allow
           from_ip: "{{ item }}"
-          port: "{{ secure_device_firewall_ssh_port }}"
+          port: "{{ secure_device_sshd_port }}"
           proto: tcp
       changed_when: false
       with_items: "{{ secure_device_ssh_allowed_ips }}"
@@ -30,6 +30,7 @@
       set_fact:
         _ufw_policies: "{{ _ufw_ssh_policies.results | map(attribute='ansible_facts._ufw_ssh_policy') | list }} + {{ secure_device_everyone_ports }}"
       changed_when: false
+
 
     # Determine whether or not the entire UFW policy list has changed from the
     # last deploy.

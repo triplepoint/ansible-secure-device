@@ -5,6 +5,29 @@
     name: openssh-server
     state: present
 
+- name: Ensure the root user can never login via SSH
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "PermitRootLogin no"
+    regexp: '^#?PermitRootLogin '
+  notify: restart ssh
+
+- name: Ensure global SSH password auth is disabled for everyone
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "PasswordAuthentication no"
+    regexp: '^#?PasswordAuthentication '
+  notify: restart ssh
+
+- name: Ensure SSHD is listening on the desired port
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "Port {{ secure_device_sshd_port }}"
+    regexp: '^#?Port '
+  notify: restart ssh
+
+
+# Users
 - name: Ensure all the users have their own groups
   group:
     name: "{{ item.username }}"
@@ -23,14 +46,6 @@
     password: "{{ item.crypted_password }}"
   with_items: "{{ secure_device_users }}"
 
-- name: Ensure the user SSH keys are present, with restrictions
-  authorized_key:
-    user: "{{ item.username }}"
-    key: "{{ item.public_key }}"
-    key_options: 'no-port-forwarding,no-agent-forwarding,no-X11-forwarding'
-    state: present
-  with_items: "{{ secure_device_users }}"
-
 - name: Ensure each user has a sudo rule set up for them
   lineinfile:
     dest: "/etc/sudoers.d/99-user-{{ item.username }}"
@@ -43,22 +58,16 @@
     mode: 0440
   with_items: "{{ secure_device_users }}"
 
-- name: Ensure the root user can never login via SSH
-  lineinfile:
-    dest: '/etc/ssh/sshd_config'
-    line: "PermitRootLogin no"
-    regexp: '^#?PermitRootLogin '
-  notify: restart ssh
 
-- name: Ensure global SSH password auth is disabled for everyone
-  lineinfile:
-    dest: '/etc/ssh/sshd_config'
-    line: "PasswordAuthentication no"
-    regexp: '^#?PasswordAuthentication '
-  notify: restart ssh
+# Per-User SSH Config
+- name: Ensure the user SSH keys are present, with restrictions
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.public_key }}"
+    key_options: 'no-port-forwarding,no-agent-forwarding,no-X11-forwarding'
+    state: present
+  with_items: "{{ secure_device_users }}"
 
-# This bit juggles around some strings so we can build `AllowUsers` in the
-# sshd_config file.
 - name: Define the allow_users list variable of "username@host" allowed ssh users
   set_fact:
     _allow_users: "{{ item.username }}@{{ item.allowed_ssh_host }}"
