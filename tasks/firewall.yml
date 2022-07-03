@@ -28,7 +28,7 @@
 
     - name: Add the ssh port policies to the defined additional policies
       set_fact:
-        _ufw_policies: "{{ _ufw_ssh_policies.results | map(attribute='ansible_facts._ufw_ssh_policy') | list }} + {{ secure_device_everyone_ports }}"
+        _ufw_policies: "{{ _ufw_ssh_policies.results | map(attribute='ansible_facts._ufw_ssh_policy') | list | union(secure_device_everyone_ports) }}"
       changed_when: false
 
 
