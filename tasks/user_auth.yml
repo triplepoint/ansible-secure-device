@@ -61,7 +61,7 @@
 
 # Per-User SSH Config
 - name: Ensure the user SSH keys are present, with restrictions
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.username }}"
     key: "{{ item.public_key }}"
     key_options: 'no-port-forwarding,no-agent-forwarding,no-X11-forwarding'
