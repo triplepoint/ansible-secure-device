@@ -1,53 +1,53 @@
 ---
 # Global SSH
 - name: Ensure sshd is installed
-  package:
+  ansible.builtin.package:
     name: openssh-server
     state: present
 
 - name: Ensure the root user can never login via SSH
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/ssh/sshd_config'
     line: "PermitRootLogin no"
     regexp: '^#?PermitRootLogin '
-  notify: restart ssh
+  notify: Restart ssh
 
 - name: Ensure global SSH password auth is disabled for everyone
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/ssh/sshd_config'
     line: "PasswordAuthentication no"
     regexp: '^#?PasswordAuthentication '
-  notify: restart ssh
+  notify: Restart ssh
 
 - name: Ensure SSHD is listening on the desired port
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/ssh/sshd_config'
     line: "Port {{ secure_device_sshd_port }}"
     regexp: '^#?Port '
-  notify: restart ssh
+  notify: Restart ssh
 
 
 # Users
 - name: Ensure all the users have their own groups
-  group:
+  ansible.builtin.group:
     name: "{{ item.username }}"
     state: present
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure the users are all present
-  user:
+  ansible.builtin.user:
     name: "{{ item.username }}"
     group: "{{ item.username }}"
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure the users have their passwords set
-  user:
+  ansible.builtin.user:
     name: "{{ item.username }}"
     password: "{{ item.crypted_password }}"
   with_items: "{{ secure_device_users }}"
 
 - name: Ensure each user has a sudo rule set up for them
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "/etc/sudoers.d/99-user-{{ item.username }}"
     line: '{{ item.username }} ALL=(ALL) {{ "NOPASSWD:" if item.sudo_passwordless is defined and item.sudo_passwordless else "" }}ALL'
     regexp: '^{{ item.username }} '
@@ -69,18 +69,18 @@
   with_items: "{{ secure_device_users }}"
 
 - name: Define the allow_users list variable of "username@host" allowed ssh users
-  set_fact:
+  ansible.builtin.set_fact:
     _allow_users: "{{ item.username }}@{{ item.allowed_ssh_host }}"
   with_items: "{{ secure_device_users }}"
   register: _allow_users_result
 
 - name: Pull the processed list out of the _allow_users_result object
-  set_fact:
+  ansible.builtin.set_fact:
     _allow_users_mapped: "{{ _allow_users_result.results | map(attribute='ansible_facts._allow_users') | list }}"
 
 - name: Only allow SSH from a specific set of hosts and users
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/ssh/sshd_config'
     line: "AllowUsers {{ _allow_users_mapped | join(' ') }}"
     regexp: '^#?AllowUsers .*'
-  notify: restart ssh
+  notify: Restart ssh

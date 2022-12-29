@@ -1,15 +1,15 @@
 ---
-- name: restart ssh
-  service:
+- name: Restart ssh
+  ansible.builtin.service:
     name: ssh
     state: restarted
 
-- name: restart chrony
-  service:
+- name: Restart chrony
+  ansible.builtin.service:
     name: chrony
     state: restarted
 
-- name: reload fail2ban
-  service:
+- name: Reload fail2ban
+  ansible.builtin.service:
     name: fail2ban
     state: reloaded

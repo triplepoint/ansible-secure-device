@@ -3,7 +3,7 @@
   when: not secure_device_install_fail2ban
   block:
     - name: Ensure fail2ban is not installed
-      package:
+      ansible.builtin.package:
         name: fail2ban
         state: absent
 
@@ -11,15 +11,15 @@
   when: secure_device_install_fail2ban
   block:
     - name: Ensure fail2ban is installed
-      package:
+      ansible.builtin.package:
         name: fail2ban
         state: present
 
     - name: Ensure the fail2ban config file is present
-      template:
+      ansible.builtin.template:
         src: jail.local.j2
         dest: /etc/fail2ban/jail.local
         mode: 0644
         owner: root
         group: root
-      notify: reload fail2ban
+      notify: Reload fail2ban

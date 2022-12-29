@@ -3,41 +3,41 @@
   when: secure_device_install_ntp
   block:
     - name: Determine whether timedatectl is currently enabled
-      shell: 'timedatectl status | grep -oP " Network time on: \K\w+"'
+      ansible.builtin.shell: 'timedatectl status | grep -oP " Network time on: \K\w+"'
       changed_when: false
       register: _timedatectl_enabled
       ignore_errors: true
 
     - name: Ensure timesyncd is disabled (we'll use ntpd instead)
-      command: "timedatectl set-ntp no"
+      ansible.builtin.command: "timedatectl set-ntp no"
       when: _timedatectl_enabled.rc == 0 and _timedatectl_enabled.stdout == "yes"
 
     - name: Ensure the previously-installed NTPD package is absent
-      package:
+      ansible.builtin.package:
         name: ntp
         state: absent
 
     - name: Ensure the chrony package is present
-      package:
+      ansible.builtin.package:
         name: chrony
         state: present
 
     - name: Ensure the chrony configuration file is installed
-      template:
+      ansible.builtin.template:
         src: chrony.conf.j2
         dest: /etc/chrony/chrony.conf
         mode: 0644
-      notify: restart chrony
+      notify: Restart chrony
 
 - name: Uninstall the installed NTP services
   when: not secure_device_install_ntp
   block:
     - name: Ensure the NTPD package is absent
-      package:
+      ansible.builtin.package:
         name: ntp
         state: absent
 
     - name: Ensure the Chrony package is absent
-      package:
+      ansible.builtin.package:
         name: chrony
         state: absent

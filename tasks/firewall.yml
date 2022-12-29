@@ -3,7 +3,7 @@
   when: not secure_device_install_ufw
   block:
     - name: Ensure UFW is not installed
-      package:
+      ansible.builtin.package:
         name: ufw
         state: absent
 
@@ -11,12 +11,12 @@
   when: secure_device_install_ufw
   block:
     - name: Ensure UFW is installed
-      package:
+      ansible.builtin.package:
         name: ufw
         state: present
 
     - name: Build a list of SSH port policies
-      set_fact:
+      ansible.builtin.set_fact:
         _ufw_ssh_policy:
           rule: allow
           from_ip: "{{ item }}"
@@ -27,34 +27,32 @@
       register: _ufw_ssh_policies
 
     - name: Add the ssh port policies to the defined additional policies
-      set_fact:
+      ansible.builtin.set_fact:
         _ufw_policies: "{{ _ufw_ssh_policies.results | map(attribute='ansible_facts._ufw_ssh_policy') | list | union(secure_device_everyone_ports) }}"
       changed_when: false
 
-
-    # Determine whether or not the entire UFW policy list has changed from the
-    # last deploy.
-    - import_tasks: _var_change_detection.yml
+    - name: Detect any changes in the entire UFW policy list since the last deploy
+      ansible.builtin.import_tasks: _var_change_detection.yml
       vars:
         _change_detection_var_name: "_ufw_policies"
         _change_detection_var: "{{ _ufw_policies }}"
 
     - name: Ensure the firewall is reset
-      ufw:
+      community.general.ufw:
         state: reset
       when: _change_detection_was_detected
 
     - name: Ensure the UFW policies are applied
-      ufw:
+      community.general.ufw:
         rule: allow
         from_ip: "{{ item.from_ip | default(omit) }}"
         port: "{{ item.port | default(item) }}"
-        proto: "{{ item.proto | default(omit) }}"
+        proto: "{{ item.proto | default(omit) }}"  # noqa args[module]
       with_items: "{{ _ufw_policies }}"
       when: _change_detection_was_detected
 
     - name: Ensure the firewall is enabled, and the default policy is deny
-      ufw:
+      community.general.ufw:
         state: enabled
         default: deny
       when: _change_detection_was_detected

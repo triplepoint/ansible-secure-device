@@ -1,12 +1,18 @@
 ---
-- import_tasks: user_auth.yml
+- name: Ensure that the user auth is configured
+  ansible.builtin.import_tasks: user_auth.yml
 
-- import_tasks: fail2ban.yml
+- name: Ensure that fail2ban is configured
+  ansible.builtin.import_tasks: fail2ban.yml
 
-- import_tasks: firewall.yml
+- name: Ensure that the firwall is configured
+  ansible.builtin.import_tasks: firewall.yml
 
-- import_tasks: unattended_upgrades.yml
+- name: Ensure that unattended upgrades are configured
+  ansible.builtin.import_tasks: unattended_upgrades.yml
 
-- import_tasks: time_protocol.yml
+- name: Ensure that the time management service is configured
+  ansible.builtin.import_tasks: time_protocol.yml
 
-- import_tasks: logwatch.yml
+- name: Ensure that logwatch is configured
+  ansible.builtin.import_tasks: logwatch.yml
