@@ -5,7 +5,7 @@
     state: absent
   when: not secure_device_log_email
 
-- name: Uninstall logwatch
+- name: Install logwatch
   when: secure_device_log_email | default(false)
   block:
     - name: Ensure logwatch is present

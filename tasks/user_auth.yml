@@ -19,6 +19,13 @@
     regexp: '^#?PasswordAuthentication '
   notify: Restart ssh
 
+- name: Ensure empty passwords are disabled for everyone
+  ansible.builtin.lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "PermitEmptyPasswords no"
+    regexp: '^#?PermitEmptyPasswords '
+  notify: Restart ssh
+
 - name: Ensure SSHD is listening on the desired port
   ansible.builtin.lineinfile:
     dest: '/etc/ssh/sshd_config'

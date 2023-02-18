@@ -1,43 +1,45 @@
 ---
+- name: Ensure the NTPD package is absent
+  ansible.builtin.package:
+    name: ntp
+    state: absent
+
 - name: Install an NTP service
-  when: secure_device_install_ntp
+  when: secure_device_install_time_server
   block:
-    - name: Determine whether timedatectl is currently enabled
-      ansible.builtin.shell: 'timedatectl status | grep -oP " Network time on: \K\w+"'
-      changed_when: false
-      register: _timedatectl_enabled
-      ignore_errors: true
-
-    - name: Ensure timesyncd is disabled (we'll use ntpd instead)
-      ansible.builtin.command: "timedatectl set-ntp no"
-      when: _timedatectl_enabled.rc == 0 and _timedatectl_enabled.stdout == "yes"
-
-    - name: Ensure the previously-installed NTPD package is absent
-      ansible.builtin.package:
-        name: ntp
-        state: absent
-
-    - name: Ensure the chrony package is present
+    - name: Ensure the Chrony package is present
       ansible.builtin.package:
         name: chrony
         state: present
 
-    - name: Ensure the chrony configuration file is installed
+    - name: Ensure the Chrony configuration file is installed
       ansible.builtin.template:
         src: chrony.conf.j2
         dest: /etc/chrony/chrony.conf
         mode: 0644
       notify: Restart chrony
 
-- name: Uninstall the installed NTP services
-  when: not secure_device_install_ntp
+- name: Only use a time server client
+  when: not secure_device_install_time_server
   block:
-    - name: Ensure the NTPD package is absent
-      ansible.builtin.package:
-        name: ntp
-        state: absent
-
     - name: Ensure the Chrony package is absent
       ansible.builtin.package:
         name: chrony
         state: absent
+
+    - name: Ensure the root user can never login via SSH
+      ansible.builtin.lineinfile:
+        dest: '/etc/ssh/sshd_config'
+        line: "PermitRootLogin no"
+        regexp: '^#?PermitRootLogin '
+      notify: Restart ssh
+
+    - name: Determine whether timedatectl is currently enabled
+      ansible.builtin.shell: 'timedatectl status | grep -oP "(NTP service|systemd-timesyncd.service active): \K\w+"'
+      changed_when: false
+      register: _timedatectl_enabled
+      ignore_errors: true
+
+    - name: Ensure timesyncd is enabled
+      ansible.builtin.command: "timedatectl set-ntp yes"
+      when: _timedatectl_enabled.rc == 0 and _timedatectl_enabled.stdout != "yes" and _timedatectl_enabled.stdout != "active"
