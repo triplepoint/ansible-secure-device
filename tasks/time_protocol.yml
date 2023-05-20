@@ -38,7 +38,7 @@
       ansible.builtin.shell: 'timedatectl status | grep -oP "(NTP service|systemd-timesyncd.service active): \K\w+"'
       changed_when: false
       register: _timedatectl_enabled
-      ignore_errors: true
+      failed_when: _timedatectl_enabled.rc|int not in (0, 1)
 
     - name: Ensure timesyncd is enabled
       ansible.builtin.command: "timedatectl set-ntp yes"
